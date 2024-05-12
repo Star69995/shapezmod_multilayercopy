@@ -3,7 +3,7 @@ const METADATA = {
     website: "https://github.com/manyu-a/shapezmod_multilayercopy",
     author: "ichigatsu13",
     name: "Multi Layer Copy/Blueprint",
-    version: "1.1.0",
+    version: "1.1.1",
     id: "bothlayercopy",
     description:
         "allowing Multiple layers to be selected at once",
@@ -94,10 +94,10 @@ const HUDMassSelectorExt = ({ $super, $old }) => ({
             this.selectedEntities.length > 100
         ) {
             const { ok } = this.root.hud.parts.dialogs.showWarning(
-                T.dialogs.massDeleteConfirm.title,
-                T.dialogs.massDeleteConfirm.desc.replace(
+                shapez.T.dialogs.massDeleteConfirm.title,
+                shapez.T.dialogs.massDeleteConfirm.desc.replace(
                     "<count>",
-                    "" + formatBigNumberFull(this.selectedEntities.length)
+                    "" + shapez.formatBigNumberFull(this.selectedEntities.length)
                 ),
                 ["cancel:good:escape", "ok:bad:enter"]
             );
@@ -171,10 +171,10 @@ const HUDMassSelectorExt = ({ $super, $old }) => ({
             this.selectedEntities.length > 100
         ) {
             const { ok } = this.root.hud.parts.dialogs.showWarning(
-                T.dialogs.massCutConfirm.title,
-                T.dialogs.massCutConfirm.desc.replace(
+                shapez.T.dialogs.massCutConfirm.title,
+                shapez.T.dialogs.massCutConfirm.desc.replace(
                     "<count>",
-                    "" + formatBigNumberFull(this.selectedEntities.length)
+                    "" + shapez.formatBigNumberFull(this.selectedEntities.length)
                 ),
                 ["cancel:good:escape", "ok:bad:enter"]
             );
@@ -208,8 +208,8 @@ const HUDMassSelectorExt = ({ $super, $old }) => ({
                 cutAction();
             } else {
                 const { cancel, ok } = this.root.hud.parts.dialogs.showWarning(
-                    T.dialogs.massCutInsufficientConfirm.title,
-                    T.dialogs.massCutInsufficientConfirm.desc,
+                    shapez.T.dialogs.massCutInsufficientConfirm.title,
+                    shapez.T.dialogs.massCutInsufficientConfirm.desc,
                     ["cancel:good:escape", "ok:bad:enter"]
                 );
                 ok.add(cutAction);
@@ -733,6 +733,7 @@ const GameHUDExt = ({ $old }) => ({
         /* dev:end*/
     }
 });
+
 
 
 class Mod extends shapez.Mod {
