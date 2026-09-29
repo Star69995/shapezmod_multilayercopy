@@ -1,3 +1,11 @@
+## About this fork
+
+Fork by [Star69995](https://github.com/Star69995) with my own changes to Multi Layer Copy/Blueprint (original by [ichigatsu13 / manyu-a](https://github.com/manyu-a/shapezmod_multilayercopy)).
+
+- 1.1.3: Shapez Industries compatibility (`canAfford` may return an array), no duplicate entities when selecting, registers the massSelector HUD part.
+
+---
+
 # Multi Layer Copy/Blueprint
 A Shapez mod that allows multiple layers to be selected and copied.
 Original from [CEbbinghaus's PR](https://github.com/tobspr-games/shapez.io/pull/785)

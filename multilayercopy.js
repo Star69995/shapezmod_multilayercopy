@@ -3,10 +3,10 @@ const METADATA = {
     website: "https://github.com/manyu-a/shapezmod_multilayercopy",
     author: "ichigatsu13",
     name: "Multi Layer Copy/Blueprint",
-    version: "1.1.1",
+    version: "1.1.3",
     id: "bothlayercopy",
     description:
-        "allowing Multiple layers to be selected at once",
+        "allowing Multiple layers to be selected at once. Industries compatible.",
 
     minimumGameVersion: ">=1.5.0",
     // Maybe
@@ -58,10 +58,6 @@ const HUDMassSelectorExt = ({ $super, $old }) => ({
         this.multiLayerSelect = false;
         /**@type {Array<Entity>} */
         this.selectedEntities = [];
-        // no needs?
-        this.selectedUids.size = function() {
-                return selectedEntities.length;
-            }
     },
 
     onEntityDestroyed(entity) {
@@ -204,7 +200,9 @@ const HUDMassSelectorExt = ({ $super, $old }) => ({
             };
 
             const blueprint = shapez.Blueprint.prototype.fromEntities(this.root, entities);
-            if (blueprint.canAfford(this.root)) {
+            const canAffordResult = blueprint.canAfford(this.root);
+            const canAfford = Array.isArray(canAffordResult) ? canAffordResult.some(Boolean) : canAffordResult;
+            if (canAfford) {
                 cutAction();
             } else {
                 const { cancel, ok } = this.root.hud.parts.dialogs.showWarning(
@@ -255,6 +253,8 @@ const HUDMassSelectorExt = ({ $super, $old }) => ({
             const realTileStart = tileStart.min(tileEnd);
             const realTileEnd = tileStart.max(tileEnd);
 
+            const seenIds = new Set(this.selectedEntities.map(e => e.uid));
+
             for (let x = realTileStart.x; x <= realTileEnd.x; ++x) {
                 for (let y = realTileStart.y; y <= realTileEnd.y; ++y) {
                     let entities = [];
@@ -273,14 +273,17 @@ const HUDMassSelectorExt = ({ $super, $old }) => ({
                                 continue;
                             }
 
-                            this.selectedEntities.push(entity);
+                            if (!seenIds.has(entity.uid)) {
+                                seenIds.add(entity.uid);
+                                this.selectedEntities.push(entity);
+                            }
                         }
                     }
                 }
-
-                this.currentSelectionStartWorld = null;
-                this.currentSelectionEnd = null;
             }
+
+            this.currentSelectionStartWorld = null;
+            this.currentSelectionEnd = null;
         }
     },
 
@@ -670,6 +673,7 @@ const GameHUDExt = ({ $old }) => ({
         this.parts = {
             buildingsToolbar: new shapez.HUDBuildingsToolbar(this.root),
 
+            massSelector: new shapez.HUDMassSelector(this.root),
             blueprintPlacer: new shapez.HUDBlueprintPlacer(this.root),
             buildingPlacer: new shapez.HUDBuildingPlacer(this.root),
 
@@ -679,8 +683,6 @@ const GameHUDExt = ({ $old }) => ({
             settingsMenu: new shapez.HUDSettingsMenu(this.root),
             debugInfo: new shapez.HUDDebugInfo(this.root),
             dialogs: new shapez.HUDModalDialogs(this.root),
-            
-            // remove none 
         };
 
         if (shapez.IS_DEBUG) {
